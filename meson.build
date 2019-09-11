@@ -1,11 +1,13 @@
 project('learn-opengl', 'c', default_options: ['c_std=c11'])
 add_project_arguments('-Wall', '-Wextra', '-Werror','-Wpedantic', language: 'c')
 
-glfw = dependency('glfw3')
+# all the dependencies that we need
 subdir('glad')
+sdl = dependency('sdl2')
 
-sources = ['src/main.c']
+sources = ['src/init.c']
 
-executable('getting_started', sources,
-  dependencies: [glad, glfw]
+hello_window_sources = ['src/hello_window.c']
+executable('hello_window', hello_window_sources + sources,
+  dependencies: [glad, sdl]
 )
