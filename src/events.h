@@ -1,6 +1,7 @@
 #pragma once
-#include <stdint.h>
-#include <SDL.h>
+#include "game.h"
+// #include <stdint.h>
+// #include <SDL.h>
 
 struct game;
 typedef SDL_Keycode KEY;

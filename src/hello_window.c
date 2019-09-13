@@ -1,7 +1,3 @@
-#include <stdio.h>
-#include <stdbool.h>
-#include <glad/glad.h>
-#include <SDL.h>
 #include "game.h"
 
 void handle_keydown(struct game *g, KEY e)

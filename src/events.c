@@ -1,7 +1,4 @@
 #include "game.h"
-#include <stdbool.h>
-#include <SDL.h>
-#include <glad/glad.h>
 
 static void handle_resize(int32_t w, int32_t h)
 {

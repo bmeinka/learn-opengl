@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include "game.h"
 
 bool game_init(struct game *g)
