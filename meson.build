@@ -5,7 +5,10 @@ add_project_arguments('-Wall', '-Wextra', '-Werror','-Wpedantic', language: 'c')
 subdir('glad')
 sdl = dependency('sdl2')
 
-sources = ['src/init.c']
+sources = [
+  'src/events.c',
+  'src/init.c'
+]
 
 hello_window_sources = ['src/hello_window.c']
 executable('hello_window', hello_window_sources + sources,

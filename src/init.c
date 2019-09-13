@@ -1,75 +1,50 @@
 #include <stdio.h>
-#include "init.h"
+#include "game.h"
 
-// TODO: create a logger
-
-#define show_error_and_quit() {\
-	printf("ERROR: %s\n", SDL_GetError());\
-	SDL_Quit();\
-	return false;\
-}
-
-#define check_errors(fn) if (fn < 0) show_error_and_quit()
-#define check_null(ptr) if (!ptr) show_error_and_quit()
-
-static bool init_sdl()
+bool game_init(struct game *g)
 {
-	check_errors(SDL_Init(SDL_INIT_VIDEO));
-	return true;
-}
+	g->quit = false;
+	g->event_handlers = (struct event_handlers){0};
 
-static bool init_gl_hints()
-{
-	check_errors(SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3));
-	check_errors(SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3));
-	check_errors(SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,
-			SDL_GL_CONTEXT_PROFILE_CORE));
-	return true;
-}
+	if (SDL_Init(SDL_INIT_VIDEO) < 0)
+		goto error;
 
-static bool init_window(struct window *window)
-{
-	window->window = SDL_CreateWindow(WINDOW_TITLE,
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+
+	g->window = SDL_CreateWindow(WINDOW_TITLE,
 			SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
 			WINDOW_WIDTH, WINDOW_HEIGHT,
 			SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
-	check_null(window->window);
-	return true;
-}
+	if (!g->window) goto error;
 
-static bool init_context(struct window *window)
-{
-	window->context = SDL_GL_CreateContext(window->window);
-	check_null(window->context);
-	SDL_GL_MakeCurrent(window->window, window->context);
-	return true;
-}
+	g->context = SDL_GL_CreateContext(g->window);
+	if (!g->context) goto error;
 
-static bool init_glad()
-{
+	SDL_GL_MakeCurrent(g->window, g->context);
 	if (!gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress)) {
-		puts("ERROR: failed to initialize glad");
-		SDL_Quit();
-		return false;
+		SDL_SetError("failed to initialize GLAD");
+		goto error;
 	}
+
 	glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 	return true;
+
+error:
+	g->quit = true;
+	printf("ERROR: %s\n", SDL_GetError());
+	SDL_Quit();
+	return false;
 }
 
-bool window_initialize(struct window *window)
+void game_close(struct game *g)
 {
-	window->quit = false;
-	return (init_sdl() &&
-		init_gl_hints() &&
-		init_window(window) &&
-		init_context(window) &&
-		init_glad());
-}
+	SDL_GL_DeleteContext(g->context);
+	SDL_DestroyWindow(g->window);
 
-void window_close(struct window *window)
-{
-	SDL_GL_DeleteContext(window->context);
-	SDL_DestroyWindow(window->window);
-	window->window = window->context = NULL;
+	g->quit = true;
+	g->window = g->context = NULL;
+
 	SDL_Quit();
 }

@@ -2,43 +2,29 @@
 #include <stdbool.h>
 #include <glad/glad.h>
 #include <SDL.h>
-#include "init.h"
+#include "game.h"
 
-void handle_window_event(struct window *window, SDL_Event *e)
+void handle_keydown(struct game *g, KEY e)
 {
-	if (e->window.event == SDL_WINDOWEVENT_RESIZED)
-		glViewport(0, 0, e->window.data1, e->window.data2);
-	(void)window;
-}
-
-void handle_input_event(struct window *window, SDL_Event *e)
-{
-	if (e->key.keysym.sym == SDLK_ESCAPE)
-		window->quit = true;
+	if (e == ESCAPE)
+		g->quit = true;
 }
 
 int main()
 {
-	struct window window;
-	window_initialize(&window);
-	SDL_Event e;
+	struct game g;
+	game_init(&g);
+	g.event_handlers.keydown = &handle_keydown;
 
-	while (!window.quit) {
-		while (SDL_PollEvent(&e)) {
-			if (e.type == SDL_QUIT)
-				window.quit = true;
-			else if (e.type == SDL_WINDOWEVENT)
-				handle_window_event(&window, &e);
-			else if (e.type == SDL_KEYDOWN)
-				handle_input_event(&window, &e);
-		}
+	while (!g.quit) {
+		handle_events(&g);
 
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		SDL_GL_SwapWindow(window.window);
+		game_swap_window(&g);
 	}
 
-	window_close(&window);
+	game_close(&g);
 	return 0;
 }
