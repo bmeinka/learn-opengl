@@ -1,4 +1,4 @@
 # Learning OpenGL
 
-Following along [Learn OpenGL](learnopengl.com), but writing my own code and
+Following along [Learn OpenGL](https://learnopengl.com), but writing my own code and
 writing everything in C.
