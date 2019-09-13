@@ -1,6 +1,6 @@
 #include "game.h"
 
-void handle_keydown(struct game *g, KEY e)
+static void handle_keydown(struct game *g, KEY e)
 {
 	if (e == ESCAPE)
 		g->quit = true;

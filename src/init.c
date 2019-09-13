@@ -3,7 +3,7 @@
 bool game_init(struct game *g)
 {
 	g->quit = false;
-	g->event_handlers = (struct event_handlers){0};
+	init_events(g);
 
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 		goto error;

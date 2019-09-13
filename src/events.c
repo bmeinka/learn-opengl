@@ -1,15 +1,21 @@
 #include "game.h"
 
-static void handle_resize(int32_t w, int32_t h)
+static void handle_resize(struct game *g, int32_t w, int32_t h)
 {
+	(void)g;
 	glViewport(0, 0, w, h);
 }
 
 static void handle_window_event(struct game *g, SDL_Event e)
 {
 	if (e.window.type == SDL_WINDOWEVENT_RESIZED)
-		handle_resize(e.window.data1, e.window.data2);
-	(void)g;
+		g->event_handlers.window.resized(g, e.window.data1, e.window.data2);
+}
+
+void init_events(struct game *g)
+{
+	g->event_handlers = (struct event_handlers){0};
+	g->event_handlers.window.resized = &handle_resize;
 }
 
 void handle_events(struct game *g)

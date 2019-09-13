@@ -17,4 +17,5 @@ struct event_handlers {
 	struct event_handlers_window window;
 };
 
+void init_events(struct game *g);
 void handle_events(struct game *g);
