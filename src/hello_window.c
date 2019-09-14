@@ -1,16 +1,9 @@
 #include "game.h"
 
-static void handle_keydown(struct game *g, KEY e)
-{
-	if (e == ESCAPE)
-		g->quit = true;
-}
-
 int main()
 {
 	struct game g;
 	game_init(&g);
-	g.event_handlers.keydown = &handle_keydown;
 
 	while (!g.quit) {
 		handle_events(&g);

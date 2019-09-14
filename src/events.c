@@ -1,5 +1,11 @@
 #include "game.h"
 
+static void handle_keydown(struct game *g, KEY k)
+{
+	if (k == ESCAPE)
+		g->quit = true;
+}
+
 static void handle_resize(struct game *g, int32_t w, int32_t h)
 {
 	(void)g;
@@ -16,17 +22,23 @@ void init_events(struct game *g)
 {
 	g->event_handlers = (struct event_handlers){0};
 	g->event_handlers.window.resized = &handle_resize;
+	g->event_handlers.keydown = &handle_keydown;
 }
 
 void handle_events(struct game *g)
 {
 	SDL_Event e;
 	while (SDL_PollEvent(&e)) {
-		if (e.type == SDL_QUIT)
-			g->quit = true;
-		else if (e.type == SDL_WINDOWEVENT)
-			handle_window_event(g, e);
-		else if (e.type == SDL_KEYDOWN && g->event_handlers.keydown)
-			g->event_handlers.keydown(g, e.key.keysym.sym);
+		switch (e.type) {
+			case SDL_QUIT:
+				g->quit = true;
+				break;
+			case SDL_WINDOWEVENT:
+				handle_window_event(g, e);
+				break;
+			case SDL_KEYDOWN:
+				g->event_handlers.keydown(g, e.key.keysym.sym);
+				break;
+		}
 	}
 }
