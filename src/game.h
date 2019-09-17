@@ -6,6 +6,7 @@
 #include <SDL.h>
 
 #include "events.h"
+#include "shaders.h"
 
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 600

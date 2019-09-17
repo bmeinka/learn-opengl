@@ -7,10 +7,16 @@ sdl = dependency('sdl2')
 
 sources = [
   'src/events.c',
-  'src/init.c'
+  'src/init.c',
+  'src/shaders.c'
 ]
 
 hello_window_sources = ['src/hello_window.c']
 executable('hello_window', hello_window_sources + sources,
+  dependencies: [glad, sdl]
+)
+
+hello_triangle_sources = ['src/hello_triangle.c']
+executable('hello_triangle', hello_triangle_sources + sources,
   dependencies: [glad, sdl]
 )
