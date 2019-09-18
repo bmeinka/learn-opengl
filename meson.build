@@ -5,28 +5,16 @@ add_project_arguments('-Wall', '-Wextra', '-Werror','-Wpedantic', language: 'c')
 subdir('glad')
 sdl = dependency('sdl2')
 
-sources = [
+src = [
   'src/events.c',
   'src/init.c',
   'src/shaders.c'
 ]
 
-hello_window_sources = ['src/hello_window.c']
-executable('hello_window', hello_window_sources + sources,
-  dependencies: [glad, sdl]
-)
+dep = [glad, sdl]
 
-hello_triangle_sources = ['src/hello_triangle.c']
-executable('hello_triangle', hello_triangle_sources + sources,
-  dependencies: [glad, sdl]
-)
-
-hello_elements_sources = ['src/hello_triangle_elements.c']
-executable('hello_elements', hello_elements_sources + sources,
-  dependencies: [glad, sdl]
-)
-
-hello_triangle_e1_src = ['src/hello_triangle_exercise_1.c']
-executable('hello_triangle_e1', hello_triangle_e1_src + sources,
-  dependencies: [glad, sdl]
-)
+executable('hello_window', ['src/hello_window.c'] + src, dependencies: dep)
+executable('hello_triangle', ['src/hello_triangle.c'] + src, dependencies: dep)
+executable('hello_elements', ['src/hello_triangle_elements.c'] + src, dependencies: dep)
+executable('hello_triangle_e1', ['src/hello_triangle_exercise_1.c'] + src, dependencies: dep)
+executable('hello_triangle_e2', ['src/hello_triangle_exercise_2.c'] + src, dependencies: dep)
