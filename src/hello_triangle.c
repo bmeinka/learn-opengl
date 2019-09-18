@@ -32,13 +32,15 @@ int main()
 	while (!g.quit) {
 		handle_events(&g);
 
-		glUseProgram(shader);
-		glBindVertexArray(vao);
-
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
+		glUseProgram(shader);
+		glBindVertexArray(vao);
+
 		glDrawArrays(GL_TRIANGLES, 0, 3);
+
+		glBindVertexArray(0);
 
 		game_swap_window(&g);
 	}
