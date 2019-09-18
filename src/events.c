@@ -14,7 +14,7 @@ static void handle_resize(struct game *g, int32_t w, int32_t h)
 
 static void handle_window_event(struct game *g, SDL_Event e)
 {
-	if (e.window.type == SDL_WINDOWEVENT_RESIZED)
+	if (e.window.event == SDL_WINDOWEVENT_RESIZED)
 		g->event_handlers.window.resized(g, e.window.data1, e.window.data2);
 }
 
