@@ -25,3 +25,8 @@ hello_elements_sources = ['src/hello_triangle_elements.c']
 executable('hello_elements', hello_elements_sources + sources,
   dependencies: [glad, sdl]
 )
+
+hello_triangle_e1_src = ['src/hello_triangle_exercise_1.c']
+executable('hello_triangle_e1', hello_triangle_e1_src + sources,
+  dependencies: [glad, sdl]
+)
