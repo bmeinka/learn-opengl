@@ -1,7 +1,12 @@
 #include "game.h"
 
+#ifndef VERT_PATH
 #define VERT_PATH "shaders/hello_triangle.vert"
+#endif
+
+#ifndef FRAG_PATH
 #define FRAG_PATH "shaders/hello_triangle.frag"
+#endif
 
 int main()
 {

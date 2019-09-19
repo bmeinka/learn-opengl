@@ -13,9 +13,17 @@ src = [
 
 dep = [glad, sdl]
 
-executable('hello_window', ['src/hello_window.c'] + src, dependencies: dep)
+triangle_src =['src/hello_triangle.c'] + src
+executable('hello_window', triangle_src, dependencies: dep)
 executable('hello_triangle', ['src/hello_triangle.c'] + src, dependencies: dep)
 executable('hello_elements', ['src/hello_triangle_elements.c'] + src, dependencies: dep)
 executable('hello_triangle_e1', ['src/hello_triangle_exercise_1.c'] + src, dependencies: dep)
 executable('hello_triangle_e2', ['src/hello_triangle_exercise_2.c'] + src, dependencies: dep)
 executable('hello_triangle_e3', ['src/hello_triangle_exercise_3.c'] + src, dependencies: dep)
+
+executable('red_triangle', triangle_src,
+  dependencies: dep,
+  c_args: [
+    '-DVERT_PATH="shaders/red_triangle.vert"',
+    '-DFRAG_PATH="shaders/red_triangle.frag"'
+])
