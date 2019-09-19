@@ -1,4 +1,3 @@
-cc = meson.get_compiler('c')
 dl = cc.find_library('dl', required: false)
 opengl = dependency('gl')
 

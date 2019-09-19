@@ -2,6 +2,8 @@ project('learn-opengl', 'c', default_options: ['c_std=c11'])
 add_project_arguments('-Wall', '-Wextra', '-Werror','-Wpedantic', language: 'c')
 
 # all the dependencies that we need
+cc = meson.get_compiler('c')
+m = cc.find_library('m', required: false)
 subdir('glad')
 sdl = dependency('sdl2')
 
@@ -11,9 +13,9 @@ src = [
   'src/shaders.c'
 ]
 
-dep = [glad, sdl]
+dep = [m, glad, sdl]
 
-triangle_src =['src/hello_triangle.c'] + src
+triangle_src = ['src/hello_triangle.c'] + src
 executable('hello_window', triangle_src, dependencies: dep)
 executable('hello_triangle', ['src/hello_triangle.c'] + src, dependencies: dep)
 executable('hello_elements', ['src/hello_triangle_elements.c'] + src, dependencies: dep)
@@ -26,4 +28,7 @@ executable('red_triangle', triangle_src,
   c_args: [
     '-DVERT_PATH="shaders/red_triangle.vert"',
     '-DFRAG_PATH="shaders/red_triangle.frag"'
-])
+  ]
+)
+
+executable('uniforms', ['src/shaders_uniforms.c'] + src, dependencies: dep)

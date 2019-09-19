@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdbool.h>
+#include <math.h>
+
 #include <glad/glad.h>
 #include <SDL.h>
 
@@ -13,6 +15,7 @@
 #define WINDOW_TITLE "Learn OpenGL"
 
 #define game_swap_window(g) SDL_GL_SwapWindow((g)->window)
+#define get_time() SDL_GetTicks() / 1000.0
 
 struct game {
 	bool quit;
