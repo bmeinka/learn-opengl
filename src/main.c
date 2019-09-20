@@ -13,9 +13,10 @@ int main()
 	struct game g;
 
 	float vertices[] = {
-		-0.5, -0.5, 0.0,
-		 0.5, -0.5, 0.0,
-		 0.0,  0.5, 0.0
+		/* position */   /* color */
+		-0.5, -0.5, 0.0, 1.0, 0.0, 0.0,
+		 0.5, -0.5, 0.0, 0.0, 1.0, 0.0,
+		 0.0,  0.5, 0.0, 0.0, 0.0, 1.0,
 	};
 	GLuint vao, vbo, shader;
 
@@ -29,8 +30,13 @@ int main()
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
+	/* position attribute */
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)0);
 	glEnableVertexAttribArray(0);
+
+	/* color attribute */
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
 
 	shader = load_shader(VERT_PATH, FRAG_PATH);
 
