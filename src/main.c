@@ -1,21 +1,23 @@
 #include "game.h"
 
-#ifndef VERT_PATH
 #define VERT_PATH "shaders/hello_triangle.vert"
-#endif
-
-#ifndef FRAG_PATH
 #define FRAG_PATH "shaders/hello_triangle.frag"
-#endif
 
 int main()
 {
 	struct game g;
 
+	/*
+	 * draw two triangles next to each other using glDrawArrays by adding
+	 * more vertices to your data
+	 */
 	float vertices[] = {
-		-0.5, -0.5, 0.0,
-		 0.5, -0.5, 0.0,
-		 0.0,  0.5, 0.0
+		-1.0, -0.5, 0.0,
+		 0.0, -0.5, 0.0,
+		-0.5,  0.5, 0.0,
+		 0.0, -0.5, 0.0,
+		 0.5,  0.5, 0.0,
+		 1.0, -0.5, 0.0,
 	};
 	GLuint vao, vbo, shader;
 
@@ -43,7 +45,7 @@ int main()
 		glUseProgram(shader);
 		glBindVertexArray(vao);
 
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		glDrawArrays(GL_TRIANGLES, 0, 6);
 
 		glBindVertexArray(0);
 
