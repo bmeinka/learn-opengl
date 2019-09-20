@@ -7,28 +7,13 @@ m = cc.find_library('m', required: false)
 subdir('glad')
 sdl = dependency('sdl2')
 
+dep = [m, glad, sdl]
+
 src = [
   'src/events.c',
   'src/init.c',
+  'src/main.c',
   'src/shaders.c'
 ]
 
-dep = [m, glad, sdl]
-
-triangle_src = ['src/hello_triangle.c'] + src
-executable('hello_window', triangle_src, dependencies: dep)
-executable('hello_triangle', ['src/hello_triangle.c'] + src, dependencies: dep)
-executable('hello_elements', ['src/hello_triangle_elements.c'] + src, dependencies: dep)
-executable('hello_triangle_e1', ['src/hello_triangle_exercise_1.c'] + src, dependencies: dep)
-executable('hello_triangle_e2', ['src/hello_triangle_exercise_2.c'] + src, dependencies: dep)
-executable('hello_triangle_e3', ['src/hello_triangle_exercise_3.c'] + src, dependencies: dep)
-
-executable('red_triangle', triangle_src,
-  dependencies: dep,
-  c_args: [
-    '-DVERT_PATH="shaders/red_triangle.vert"',
-    '-DFRAG_PATH="shaders/red_triangle.frag"'
-  ]
-)
-
-executable('uniforms', ['src/shaders_uniforms.c'] + src, dependencies: dep)
+executable('learngl', src, dependencies: dep)
