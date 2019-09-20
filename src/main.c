@@ -2,39 +2,38 @@
 
 #define VERT_PATH "shaders/hello_triangle.vert"
 #define FRAG_PATH "shaders/hello_triangle.frag"
+#define FRAG_ALT_PATH "shaders/hello_triangle_yellow.frag"
 
 int main()
 {
 	struct game g;
 
 	/*
-	 * draw two triangles next to each other using glDrawArrays by adding
-	 * more vertices to your data
+	 * create two shader programs where the second program uses a different
+	 * fragment shader that outputs the color yellow; draw two triangles
+	 * where one outputs the color yellow
 	 */
-	float vertices[] = {
-		-1.0, -0.5, 0.0,
-		 0.0, -0.5, 0.0,
-		-0.5,  0.5, 0.0,
-		 0.0, -0.5, 0.0,
-		 0.5,  0.5, 0.0,
-		 1.0, -0.5, 0.0,
+	float vertices[2][9] = {
+		{-1.0, -0.5, 0.0, 0.0, -0.5, 0.0, -0.5, 0.5, 0.0},
+		{0.0, -0.5, 0.0, 0.5, 0.5, 0.0, 1.0, -0.5, 0.0}
 	};
-	GLuint vao, vbo, shader;
+	GLuint shaders[2], vaos[2], vbos[2];
 
 	game_init(&g);
 
-	glGenVertexArrays(1, &vao);
+	glGenBuffers(2, vbos);
+	glGenVertexArrays(2, vaos);
 
-	glBindVertexArray(vao);
-
-	glGenBuffers(1, &vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
-	glEnableVertexAttribArray(0);
-
-	shader = load_shader(VERT_PATH, FRAG_PATH);
+	for (size_t i = 0; i < 2; i++) {
+		glBindVertexArray(vaos[i]);
+		glBindBuffer(GL_ARRAY_BUFFER, vbos[i]);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices[i]), vertices[i], GL_STATIC_DRAW);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
+		glEnableVertexAttribArray(0);
+	}
+	
+	shaders[0] = load_shader(VERT_PATH, FRAG_PATH);
+	shaders[1] = load_shader(VERT_PATH, FRAG_ALT_PATH);
 
 	while (!g.quit) {
 		handle_events(&g);
@@ -42,12 +41,12 @@ int main()
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		glUseProgram(shader);
-		glBindVertexArray(vao);
-
-		glDrawArrays(GL_TRIANGLES, 0, 6);
-
-		glBindVertexArray(0);
+		for (size_t i = 0; i < 2; i++) {
+			glUseProgram(shaders[i]);
+			glBindVertexArray(vaos[i]);
+			glDrawArrays(GL_TRIANGLES, 0, 3);
+			glBindVertexArray(0);
+		}
 
 		game_swap_window(&g);
 	}
