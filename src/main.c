@@ -11,7 +11,6 @@
 int main()
 {
 	struct game g;
-	float t;
 
 	float vertices[] = {
 		/* position */   /* color */
@@ -19,7 +18,8 @@ int main()
 		 0.5, -0.5, 0.0, 0.0, 1.0, 0.0,
 		 0.0,  0.5, 0.0, 0.0, 0.0, 1.0,
 	};
-	GLuint vao, vbo, shader, x_offset;
+	GLuint vao, vbo, shader;
+	GLuint t;
 
 	game_init(&g);
 
@@ -41,17 +41,17 @@ int main()
 
 	shader = load_shader(VERT_PATH, FRAG_PATH);
 
+
 	while (!g.quit) {
 		handle_events(&g);
 
-		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		glUseProgram(shader);
 
-		t = sin(get_time());
-		x_offset = glGetUniformLocation(shader, "x_offset");
-		glUniform1f(x_offset, t);
+		t = glGetUniformLocation(shader, "t");
+		glUniform1f(t, fmodf(get_time(), 3.0));
 		glBindVertexArray(vao);
 
 		glDrawArrays(GL_TRIANGLES, 0, 3);
